@@ -16,7 +16,11 @@ namespace PracticingMarten
             {
                 AddToDatabase(session);
                 SimpleReadFromDatabase(session);
+                FilterReadFromDatabase(session);
             }
+
+            System.Console.WriteLine("------------------------------------");
+
             Console.WriteLine("Hello World!");
         }
 
@@ -42,12 +46,30 @@ namespace PracticingMarten
         // Provides output so you can see that it works
         static void SimpleReadFromDatabase(IDocumentSession session)
         {
+            System.Console.WriteLine("------------------------------------");
             var targets = session.Query<UserResource>().ToArray();
 
             // Loop through and print out the names
             foreach(var user in targets)
             {
                 System.Console.WriteLine(user.Name);
+            }
+        }
+
+
+        // This queries the database and filters by name
+        // outputs the different globally unique identifiers assigned to the users
+        static void FilterReadFromDatabase(IDocumentSession session)
+        {
+            System.Console.WriteLine("------------------------------------");
+            var queriedOutput = session.Query<UserResource>().Where(
+                c => c.Name == "Name"
+            )
+            .ToArray();
+
+            foreach(var user in queriedOutput)
+            {
+                System.Console.WriteLine(user.Id);
             }
         }
     }
