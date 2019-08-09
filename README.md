@@ -30,7 +30,7 @@ A project where I am learning about Marten
 - Open the project folder in an editor e.g. vs code
 
 ## Setting up a user for the new database
-- Enter these commands one at a time:
+Enter these commands one at a time:
 - `CREATE ROLE rds_superuser;`
 - `ALTER ROLE rds_superuser WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN NOREPLICATION VALID UNTIL 'infinity';`
 - `CREATE ROLE username LOGIN NOSUPERUSER INHERIT CREATEDB CREATEROLE NOREPLICATION;`
