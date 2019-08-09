@@ -17,6 +17,7 @@ namespace PracticingMarten
                 AddToDatabase(session);
                 SimpleReadFromDatabase(session);
                 FilterReadFromDatabase(session);
+                Updater(session);
             }
 
             System.Console.WriteLine("------------------------------------");
@@ -30,10 +31,12 @@ namespace PracticingMarten
         // This must be saved in the database
         static void AddToDatabase(IDocumentSession session)
         {
-           
                 var user = new UserResource
                 {
-                    Name = "John Smith" 
+                    FirstName = "Walter",
+                    LastName = "WokStar",
+                    Age = 18,
+                    FavouriteWokCompany = "Wok On!" 
                 };
 
                 session.Store(user);
@@ -52,7 +55,7 @@ namespace PracticingMarten
             // Loop through and print out the names
             foreach(var user in targets)
             {
-                System.Console.WriteLine(user.Name);
+                System.Console.WriteLine(user.FirstName);
             }
         }
 
@@ -62,15 +65,51 @@ namespace PracticingMarten
         static void FilterReadFromDatabase(IDocumentSession session)
         {
             System.Console.WriteLine("------------------------------------");
-            var queriedOutput = session.Query<UserResource>().Where(
-                c => c.Name == "Name"
+
+            var queriedOutput = session.Query<UserResource>()
+            .Where(
+                c => c.FirstName == "Walter"
             )
             .ToArray();
 
             foreach(var user in queriedOutput)
             {
-                System.Console.WriteLine(user.Id);
+                System.Console.WriteLine("Favourite wok company: " + user.FavouriteWokCompany);
             }
+        }
+
+
+        // Update an existing row by taking existing data and updating it to be consistent
+        static void Updater(IDocumentSession session)
+        {
+            var defaultWokCompany = "Wok On!"; 
+
+            var results = session.Query<UserResource>()
+            .Where(
+                c => c.FirstName == null
+            )
+            .ToArray();
+
+            foreach(var result in results)
+            {
+                System.Console.WriteLine("Renamed from " + result.Name);
+                var splitName = result.Name.Split(" ");
+                
+                result.FirstName = splitName[0];
+
+                if(result.Name.Contains(" "))
+                    result.LastName = splitName[1];
+
+                if (result.FavouriteWokCompany == null)
+                {
+                    result.FavouriteWokCompany = defaultWokCompany;
+                }
+
+                session.Store(result);
+            }
+
+            session.SaveChanges();
+
         }
     }
 }
