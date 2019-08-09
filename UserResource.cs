@@ -1,4 +1,5 @@
 using System;
+
 public class UserResource
 {
     public Guid Id { get; set; }

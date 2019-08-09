@@ -1,33 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Marten;
 
 namespace PracticingMarten
 {
     class Program
     {
+
+        private static DocumentStore store = DocumentStore.For("host=localhost;database=postgres;password=password;username=username");
+
         static void Main(string[] args)
         {
-            var store = DocumentStore.For("host=localhost;database=postgres;password=password;username=username");
-
-
-            using (var session = store.LightweightSession())
+             using (var session = store.LightweightSession())
             {
+                AddToDatabase(session);
+                SimpleReadFromDatabase(session);
+            }
+            Console.WriteLine("Hello World!");
+        }
+
+        // This writes to the database
+        // A new object is created an populated
+        // the new user is then stored in the database
+        // This must be saved in the database
+        static void AddToDatabase(IDocumentSession session)
+        {
+           
                 var user = new UserResource
                 {
-                    Name = "Name" 
+                    Name = "John Smith" 
                 };
 
                 session.Store(user);
-
                 session.SaveChanges();
+            
+        }
+
+        // This queries the database that is currently being accessed
+        // The Query looks for the objects that have been saved of that type - in this case it is looking for UserResource objects
+        // Provides output so you can see that it works
+        static void SimpleReadFromDatabase(IDocumentSession session)
+        {
+            var targets = session.Query<UserResource>().ToArray();
+
+            // Loop through and print out the names
+            foreach(var user in targets)
+            {
+                System.Console.WriteLine(user.Name);
             }
-
-            
-            
-
-
-            
-            Console.WriteLine("Hello World!");
         }
     }
 }
