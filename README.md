@@ -31,11 +31,11 @@ A project where I am learning about Marten
 
 ## Setting up a user for the new database
 - Enter these commands one at a time:
-- `CREATE ROLE rds_superuser;'
-- 'ALTER ROLE rds_superuser WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN NOREPLICATION VALID UNTIL 'infinity';'
-- 'CREATE ROLE username LOGIN NOSUPERUSER INHERIT CREATEDB CREATEROLE NOREPLICATION;'
-- 'GRANT rds_superuser TO username;'
-- 'ALTER USER username with password 'password';'
+- `CREATE ROLE rds_superuser;`
+- `ALTER ROLE rds_superuser WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN NOREPLICATION VALID UNTIL 'infinity';`
+- `CREATE ROLE username LOGIN NOSUPERUSER INHERIT CREATEDB CREATEROLE NOREPLICATION;`
+- `GRANT rds_superuser TO username;`
+- `ALTER USER username with password 'password';`
 `
 
 ## Once you have done this you can setup a new connection for Marten
